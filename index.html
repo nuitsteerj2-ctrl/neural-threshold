@@ -1,0 +1,726 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Neural Threshold — Understanding Sensory Sensitivity</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Mono:wght@400;500&family=Outfit:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --bg: #0a0a0c;
+    --surface: #111116;
+    --surface2: #18181f;
+    --border: rgba(255,255,255,0.07);
+    --border2: rgba(255,255,255,0.13);
+    --accent: #7b6ef6;
+    --accent2: #a78bfa;
+    --accent-dim: rgba(123,110,246,0.12);
+    --text: #e8e8ee;
+    --text-muted: #8888a0;
+    --text-faint: #4a4a62;
+    --mono: 'DM Mono', monospace;
+    --serif: 'DM Serif Display', serif;
+    --sans: 'Outfit', sans-serif;
+  }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: var(--sans);
+    font-weight: 300;
+    line-height: 1.7;
+    font-size: 17px;
+    overflow-x: hidden;
+  }
+
+  /* ── NOISE TEXTURE OVERLAY ── */
+  body::before {
+    content: '';
+    position: fixed; inset: 0;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.03'/%3E%3C/svg%3E");
+    pointer-events: none;
+    z-index: 0;
+    opacity: 0.4;
+  }
+
+  /* ── HEADER ── */
+  header {
+    position: fixed; top: 0; left: 0; right: 0;
+    z-index: 100;
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 0 3rem;
+    height: 64px;
+    background: rgba(10,10,12,0.85);
+    backdrop-filter: blur(16px);
+    border-bottom: 1px solid var(--border);
+  }
+
+  .logo {
+    font-family: var(--mono);
+    font-size: 13px;
+    letter-spacing: 0.15em;
+    color: var(--accent2);
+    text-transform: uppercase;
+  }
+
+  nav { display: flex; gap: 2rem; }
+  nav a {
+    font-size: 13px;
+    font-weight: 400;
+    color: var(--text-muted);
+    text-decoration: none;
+    letter-spacing: 0.05em;
+    transition: color 0.2s;
+  }
+  nav a:hover { color: var(--text); }
+
+  /* ── HERO ── */
+  .hero {
+    position: relative;
+    min-height: 100vh;
+    display: flex; align-items: center;
+    padding: 120px 0 80px;
+    overflow: hidden;
+  }
+
+  .hero-bg {
+    position: absolute; inset: 0;
+    background:
+      radial-gradient(ellipse 60% 50% at 70% 50%, rgba(123,110,246,0.06) 0%, transparent 70%),
+      radial-gradient(ellipse 40% 40% at 20% 80%, rgba(167,139,250,0.04) 0%, transparent 60%);
+  }
+
+  .hero-grid {
+    position: absolute; inset: 0;
+    background-image:
+      linear-gradient(rgba(255,255,255,0.025) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(255,255,255,0.025) 1px, transparent 1px);
+    background-size: 60px 60px;
+    mask-image: radial-gradient(ellipse 80% 80% at center, black 0%, transparent 80%);
+  }
+
+  .hero-content {
+    position: relative;
+    max-width: 900px;
+    padding: 0 3rem;
+  }
+
+  .tag {
+    display: inline-flex; align-items: center; gap: 8px;
+    font-family: var(--mono);
+    font-size: 11px;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--accent);
+    background: var(--accent-dim);
+    border: 1px solid rgba(123,110,246,0.25);
+    padding: 5px 12px;
+    border-radius: 2px;
+    margin-bottom: 2rem;
+  }
+
+  .tag::before {
+    content: '';
+    width: 6px; height: 6px;
+    border-radius: 50%;
+    background: var(--accent);
+    animation: pulse 2s infinite;
+  }
+
+  @keyframes pulse {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.3; }
+  }
+
+  h1 {
+    font-family: var(--serif);
+    font-size: clamp(2.4rem, 5vw, 4rem);
+    font-weight: 400;
+    line-height: 1.15;
+    color: #f0f0f8;
+    margin-bottom: 1.5rem;
+    letter-spacing: -0.01em;
+  }
+
+  h1 em {
+    font-style: italic;
+    color: var(--accent2);
+  }
+
+  .hero-lead {
+    font-size: 1.15rem;
+    color: var(--text-muted);
+    max-width: 600px;
+    line-height: 1.8;
+    margin-bottom: 2.5rem;
+  }
+
+  .hero-cta {
+    display: flex; gap: 1rem; align-items: center; flex-wrap: wrap;
+  }
+
+  .btn-primary {
+    display: inline-flex; align-items: center; gap: 8px;
+    background: var(--accent);
+    color: #fff;
+    font-family: var(--sans);
+    font-size: 14px;
+    font-weight: 500;
+    padding: 12px 24px;
+    border-radius: 3px;
+    text-decoration: none;
+    transition: background 0.2s, transform 0.15s;
+  }
+  .btn-primary:hover { background: var(--accent2); transform: translateY(-1px); }
+
+  .btn-ghost {
+    display: inline-flex; align-items: center; gap: 8px;
+    color: var(--text-muted);
+    font-size: 14px;
+    font-weight: 400;
+    padding: 12px 20px;
+    border-radius: 3px;
+    text-decoration: none;
+    border: 1px solid var(--border2);
+    transition: color 0.2s, border-color 0.2s;
+  }
+  .btn-ghost:hover { color: var(--text); border-color: rgba(255,255,255,0.25); }
+
+  /* ── STATS STRIP ── */
+  .stats-strip {
+    border-top: 1px solid var(--border);
+    border-bottom: 1px solid var(--border);
+    background: var(--surface);
+    padding: 2rem 3rem;
+    display: flex; gap: 0;
+  }
+
+  .stat {
+    flex: 1;
+    padding: 0 2rem;
+    border-right: 1px solid var(--border);
+  }
+  .stat:first-child { padding-left: 0; }
+  .stat:last-child { border-right: none; }
+
+  .stat-num {
+    font-family: var(--serif);
+    font-size: 2rem;
+    color: var(--accent2);
+    display: block;
+    line-height: 1;
+    margin-bottom: 0.4rem;
+  }
+
+  .stat-label {
+    font-size: 12px;
+    font-family: var(--mono);
+    color: var(--text-faint);
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+  }
+
+  /* ── MAIN CONTENT ── */
+  .container {
+    max-width: 1100px;
+    margin: 0 auto;
+    padding: 0 3rem;
+  }
+
+  .section {
+    padding: 6rem 0;
+  }
+
+  .section-label {
+    font-family: var(--mono);
+    font-size: 11px;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--accent);
+    margin-bottom: 1rem;
+  }
+
+  h2 {
+    font-family: var(--serif);
+    font-size: clamp(1.8rem, 3vw, 2.6rem);
+    font-weight: 400;
+    color: #f0f0f8;
+    line-height: 1.2;
+    margin-bottom: 1.5rem;
+    letter-spacing: -0.01em;
+  }
+
+  /* ── TWO COLUMN ARTICLE LAYOUT ── */
+  .article-grid {
+    display: grid;
+    grid-template-columns: 1fr 340px;
+    gap: 4rem;
+    align-items: start;
+  }
+
+  .article-body p {
+    color: var(--text-muted);
+    margin-bottom: 1.5rem;
+    font-size: 1.025rem;
+    line-height: 1.85;
+  }
+
+  .article-body p strong {
+    color: var(--text);
+    font-weight: 500;
+  }
+
+  /* ── SIDEBAR ── */
+  .sidebar { position: sticky; top: 90px; }
+
+  .sidebar-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 4px;
+    padding: 1.5rem;
+    margin-bottom: 1.5rem;
+  }
+
+  .sidebar-card-title {
+    font-family: var(--mono);
+    font-size: 11px;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: var(--accent);
+    margin-bottom: 1rem;
+  }
+
+  .term-list { list-style: none; }
+  .term-list li {
+    padding: 0.7rem 0;
+    border-bottom: 1px solid var(--border);
+    display: flex;
+    flex-direction: column;
+    gap: 3px;
+  }
+  .term-list li:last-child { border-bottom: none; padding-bottom: 0; }
+
+  .term-name {
+    font-size: 13px;
+    font-weight: 500;
+    color: var(--text);
+  }
+
+  .term-def {
+    font-size: 12px;
+    color: var(--text-faint);
+    line-height: 1.5;
+  }
+
+  /* ── PULL QUOTE ── */
+  .pull-quote {
+    border-left: 3px solid var(--accent);
+    padding: 1.25rem 1.5rem;
+    margin: 2.5rem 0;
+    background: var(--accent-dim);
+    border-radius: 0 4px 4px 0;
+  }
+
+  .pull-quote p {
+    font-family: var(--serif);
+    font-size: 1.3rem;
+    color: #d0d0e8 !important;
+    font-style: italic;
+    line-height: 1.5;
+    margin: 0 !important;
+  }
+
+  /* ── MECHANISM CARDS ── */
+  .mechanism-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 1px;
+    background: var(--border);
+    border: 1px solid var(--border);
+    border-radius: 4px;
+    overflow: hidden;
+    margin: 3rem 0;
+  }
+
+  .mcard {
+    background: var(--surface);
+    padding: 2rem;
+    transition: background 0.2s;
+  }
+  .mcard:hover { background: var(--surface2); }
+
+  .mcard-icon {
+    width: 40px; height: 40px;
+    border-radius: 3px;
+    background: var(--accent-dim);
+    border: 1px solid rgba(123,110,246,0.2);
+    display: flex; align-items: center; justify-content: center;
+    margin-bottom: 1.25rem;
+    font-size: 18px;
+  }
+
+  .mcard h3 {
+    font-family: var(--sans);
+    font-size: 15px;
+    font-weight: 500;
+    color: var(--text);
+    margin-bottom: 0.75rem;
+    letter-spacing: 0.01em;
+  }
+
+  .mcard p {
+    font-size: 13.5px;
+    color: var(--text-muted);
+    line-height: 1.7;
+  }
+
+  /* ── SECOND ARTICLE ── */
+  .divider {
+    height: 1px;
+    background: linear-gradient(90deg, transparent, var(--border2), transparent);
+    margin: 0;
+  }
+
+  /* ── BULLET LIST STYLED ── */
+  .styled-list {
+    list-style: none;
+    display: flex; flex-direction: column; gap: 0.75rem;
+    margin: 1.5rem 0;
+  }
+
+  .styled-list li {
+    display: flex; gap: 1rem;
+    font-size: 1rem;
+    color: var(--text-muted);
+    line-height: 1.6;
+  }
+
+  .styled-list li::before {
+    content: '—';
+    color: var(--accent);
+    font-family: var(--mono);
+    flex-shrink: 0;
+    margin-top: 1px;
+  }
+
+  /* ── NEURAL DIAGRAM SVG SECTION ── */
+  .diagram-section {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 4px;
+    padding: 3rem;
+    margin: 3rem 0;
+  }
+
+  .diagram-label {
+    font-family: var(--mono);
+    font-size: 10px;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--text-faint);
+    text-align: center;
+    margin-top: 1.5rem;
+  }
+
+  /* ── FOOTER ── */
+  footer {
+    background: var(--surface);
+    border-top: 1px solid var(--border);
+    padding: 3rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+
+  .footer-logo {
+    font-family: var(--mono);
+    font-size: 13px;
+    color: var(--accent2);
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+  }
+
+  .footer-note {
+    font-size: 12px;
+    color: var(--text-faint);
+    font-family: var(--mono);
+  }
+
+  /* ── FADE IN ANIMATION ── */
+  .fade-up {
+    opacity: 0;
+    transform: translateY(24px);
+    transition: opacity 0.6s ease, transform 0.6s ease;
+  }
+  .fade-up.visible {
+    opacity: 1;
+    transform: translateY(0);
+  }
+
+  @media (max-width: 768px) {
+    header { padding: 0 1.5rem; }
+    nav { display: none; }
+    .hero-content { padding: 0 1.5rem; }
+    .stats-strip { flex-direction: column; padding: 1.5rem; }
+    .stat { border-right: none; border-bottom: 1px solid var(--border); padding: 1rem 0; }
+    .stat:last-child { border-bottom: none; }
+    .container { padding: 0 1.5rem; }
+    .article-grid { grid-template-columns: 1fr; }
+    .sidebar { position: static; }
+    footer { flex-direction: column; gap: 1rem; text-align: center; }
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="logo">Neural Threshold</div>
+  <nav>
+    <a href="#mechanisms">Mechanisms</a>
+    <a href="#sensitization">Sensitization</a>
+    <a href="#plasticity">Plasticity</a>
+  </nav>
+</header>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-bg"></div>
+  <div class="hero-grid"></div>
+  <div class="hero-content">
+    <div class="tag">Neuroscience Perspectives</div>
+    <h1>When Normal Stimuli<br>Start Feeling <em>Toxic</em></h1>
+    <p class="hero-lead">
+      A neuroscience perspective on why everyday environments can become overwhelming — and why the answer lies in neuronal hyperexcitability, not psychology.
+    </p>
+    <div class="hero-cta">
+      <a href="#article1" class="btn-primary">Read the Article →</a>
+      <a href="#mechanisms" class="btn-ghost">Explore Mechanisms</a>
+    </div>
+  </div>
+</section>
+
+<!-- STATS -->
+<div class="stats-strip">
+  <div class="container" style="display:flex;width:100%;padding:0 3rem;">
+    <div class="stat">
+      <span class="stat-num">3</span>
+      <span class="stat-label">Core Mechanisms</span>
+    </div>
+    <div class="stat">
+      <span class="stat-num">2</span>
+      <span class="stat-label">In-Depth Articles</span>
+    </div>
+    <div class="stat">
+      <span class="stat-num">E/I</span>
+      <span class="stat-label">Imbalance at the Root</span>
+    </div>
+    <div class="stat">
+      <span class="stat-num">∞</span>
+      <span class="stat-label">Reinforcement Loops</span>
+    </div>
+  </div>
+</div>
+
+<!-- ARTICLE 1 -->
+<section class="section" id="article1">
+  <div class="container">
+    <div class="article-grid">
+      <div class="article-body fade-up">
+        <p class="section-label">Article 01</p>
+        <h2>A Neuroscience Perspective on Sensory Sensitivity</h2>
+
+        <p>People often assume that sensitivity to everyday environments is psychological or exaggerated. From a neuroscience point of view, that explanation doesn't really hold up.</p>
+
+        <p>What makes more sense is <strong>neuronal hyperexcitability leading to central sensitization</strong>. When neurons become hyperexcitable, they start firing too easily. The balance between excitation and inhibition breaks down, often due to ion channel dysfunction, neurotransmitter imbalance, or sustained neuroinflammatory signaling. The nervous system becomes reactive instead of selective.</p>
+
+        <div class="pull-quote">
+          <p>"This isn't a fringe idea. Similar mechanisms are already well established in epilepsy, migraine, and neuropathic pain."</p>
+        </div>
+
+        <p>If this hyperexcitable state persists, the brain's sensory processing changes more broadly. This is where <strong>central sensitization</strong> comes in. The nervous system amplifies incoming signals and loses its ability to filter out harmless stimuli.</p>
+
+        <p>At that point, the brain doesn't just register a smell, sound, or sensation. It interprets it as a threat. That's why low levels of common chemicals — fragrances, cleaning agents, vehicle exhaust, or new materials — can trigger real, disabling symptoms in some individuals. The response isn't imagined and it isn't voluntary. It's the nervous system misclassifying normal input as danger.</p>
+
+        <p>Symptoms like headaches, brain fog, nausea, fatigue, and muscle pain are not abstract experiences. They reflect altered neural processing and sustained activation of stress and defense pathways.</p>
+
+        <p>Looking at sensitivity through this lens matters. It moves the conversation away from dismissal and toward biology. It also highlights the need for better diagnostic tools that integrate sensory processing, symptom burden, and neural excitability rather than focusing on exposure levels alone.</p>
+
+        <p><strong>Sensitivity, in this context, isn't weakness. It's a nervous system stuck in a high-gain state.</strong> Understanding that is essential — for research, for clinical practice, and for how we treat people experiencing these conditions.</p>
+      </div>
+
+      <div class="sidebar fade-up" style="transition-delay:0.15s;">
+        <div class="sidebar-card">
+          <p class="sidebar-card-title">Key Terms</p>
+          <ul class="term-list">
+            <li>
+              <span class="term-name">Neuronal Hyperexcitability</span>
+              <span class="term-def">Neurons firing too easily due to disrupted excitation–inhibition balance.</span>
+            </li>
+            <li>
+              <span class="term-name">Central Sensitization</span>
+              <span class="term-def">Amplified CNS signal processing after prolonged hyperexcitability.</span>
+            </li>
+            <li>
+              <span class="term-name">Ion Channel Dysfunction</span>
+              <span class="term-def">Impaired regulation of ion flow that sets neural firing thresholds.</span>
+            </li>
+            <li>
+              <span class="term-name">Neuroinflammation</span>
+              <span class="term-def">Inflammatory signaling within the nervous system sustaining a reactive state.</span>
+            </li>
+            <li>
+              <span class="term-name">High-Gain State</span>
+              <span class="term-def">A nervous system configuration where signals are amplified and filtering is degraded.</span>
+            </li>
+          </ul>
+        </div>
+
+        <div class="sidebar-card">
+          <p class="sidebar-card-title">Established Parallels</p>
+          <ul class="styled-list">
+            <li>Epilepsy</li>
+            <li>Chronic migraine</li>
+            <li>Neuropathic pain</li>
+            <li>Fibromyalgia</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- MECHANISM CARDS -->
+<section id="mechanisms" style="padding-bottom: 6rem;">
+  <div class="container">
+    <p class="section-label fade-up">Core Mechanisms</p>
+    <h2 class="fade-up">Three Shifts That Change Everything</h2>
+
+    <div class="mechanism-grid fade-up">
+      <div class="mcard">
+        <div class="mcard-icon">⚡</div>
+        <h3>Ion Channel Dysfunction</h3>
+        <p>When voltage-gated channels fail to regulate ionic flow correctly, action potential thresholds drop. Neurons fire with less provocation, progressively lowering the barrier to activation.</p>
+      </div>
+      <div class="mcard">
+        <div class="mcard-icon">⚖️</div>
+        <h3>E/I Imbalance</h3>
+        <p>The normal interplay between excitatory (glutamate) and inhibitory (GABA) neurotransmitters becomes skewed. Without adequate inhibitory damping, excitation propagates too freely.</p>
+      </div>
+      <div class="mcard">
+        <div class="mcard-icon">🔥</div>
+        <h3>Neuroinflammatory Signaling</h3>
+        <p>Sustained cytokine and glial activity maintains a chronic inflammatory state in neural tissue. This directly lowers thresholds and prolongs activation windows across sensory circuits.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<!-- ARTICLE 2 -->
+<section class="section" id="sensitization">
+  <div class="container">
+    <div class="article-grid">
+      <div class="article-body fade-up">
+        <p class="section-label">Article 02</p>
+        <h2>When Sensory Systems<br>Lose Their Brakes</h2>
+
+        <p>Two mechanisms sit at the center of sensory sensitivity:</p>
+
+        <ul class="styled-list" style="margin: 0.5rem 0 1.5rem;">
+          <li>Excitation–inhibition imbalance</li>
+          <li>Persistent stress signaling</li>
+        </ul>
+
+        <p>Under normal conditions, sensory input is selectively gated. Excitatory responses are constrained by inhibitory circuits, and most stimuli never escalate beyond background noise. When inhibition weakens, excitation loses precision. Neurons fire too easily, too broadly, and remain active longer than they should.</p>
+
+        <p>At the same time, <strong>sustained stress signaling biases the system toward threat detection</strong>. Stress pathways don't just respond to stimuli — they recalibrate thresholds, amplify responses, and prolong activation. Together, these shifts place the nervous system in a high-gain state. Input is amplified, filtering degrades, and harmless stimuli acquire salience.</p>
+
+        <div class="pull-quote">
+          <p>"Once regulation is lost, the environment doesn't need to be extreme to feel overwhelming."</p>
+        </div>
+
+        <p id="plasticity">Another piece that often gets overlooked is <strong>Hebbian plasticity</strong>. In a system already biased toward hyperexcitability, sensory input and stress signaling co-activate repeatedly. When this happens, the underlying circuits strengthen — not because the stimulus is inherently harmful, but because the system is firing together in a defensive state.</p>
+
+        <p>Over time, responses become easier to trigger and harder to shut down. Thresholds drop, generalization increases, and the nervous system begins to <strong>anticipate rather than react</strong>.</p>
+
+        <p>Once these patterns are reinforced, removing the original trigger doesn't automatically reverse them. The network has adapted to operate in a state of heightened alert. That's why persistence matters as much as initiation when we talk about sensory sensitivity.</p>
+
+        <p>And why plasticity, in this context, becomes part of the problem — not the solution.</p>
+      </div>
+
+      <div class="sidebar fade-up" style="transition-delay:0.15s;">
+        <div class="sidebar-card">
+          <p class="sidebar-card-title">Hebbian Plasticity Loop</p>
+          <svg viewBox="0 0 280 220" xmlns="http://www.w3.org/2000/svg" style="width:100%;display:block;">
+            <defs>
+              <marker id="arr" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto">
+                <path d="M0,0 L0,6 L8,3 z" fill="rgba(123,110,246,0.7)"/>
+              </marker>
+            </defs>
+            <!-- nodes -->
+            <rect x="70" y="20" width="140" height="36" rx="3" fill="rgba(123,110,246,0.12)" stroke="rgba(123,110,246,0.35)" stroke-width="1"/>
+            <text x="140" y="43" text-anchor="middle" font-family="'Outfit',sans-serif" font-size="12" fill="#a78bfa">Sensory Input + Stress</text>
+
+            <rect x="70" y="92" width="140" height="36" rx="3" fill="rgba(123,110,246,0.08)" stroke="rgba(123,110,246,0.25)" stroke-width="1"/>
+            <text x="140" y="115" text-anchor="middle" font-family="'Outfit',sans-serif" font-size="12" fill="#8888a0">Co-activation of circuits</text>
+
+            <rect x="70" y="164" width="140" height="36" rx="3" fill="rgba(123,110,246,0.12)" stroke="rgba(123,110,246,0.35)" stroke-width="1"/>
+            <text x="140" y="187" text-anchor="middle" font-family="'Outfit',sans-serif" font-size="12" fill="#a78bfa">Synaptic strengthening</text>
+
+            <!-- arrows down -->
+            <line x1="140" y1="56" x2="140" y2="89" stroke="rgba(123,110,246,0.5)" stroke-width="1.5" marker-end="url(#arr)"/>
+            <line x1="140" y1="128" x2="140" y2="161" stroke="rgba(123,110,246,0.5)" stroke-width="1.5" marker-end="url(#arr)"/>
+
+            <!-- feedback loop arrow -->
+            <path d="M210,182 Q250,182 250,38 Q250,20 210,20" stroke="rgba(167,139,250,0.35)" stroke-width="1.5" fill="none" stroke-dasharray="4,3" marker-end="url(#arr)"/>
+            <text x="255" y="105" font-family="'DM Mono',monospace" font-size="9" fill="rgba(123,110,246,0.5)" transform="rotate(90,255,105)">loop</text>
+          </svg>
+          <p style="font-size:11px;color:var(--text-faint);margin-top:0.75rem;font-family:var(--mono);text-align:center;letter-spacing:0.05em;">HEBBIAN REINFORCEMENT CYCLE</p>
+        </div>
+
+        <div class="sidebar-card">
+          <p class="sidebar-card-title">Clinical Implication</p>
+          <p style="font-size:13px;color:var(--text-muted);line-height:1.7;">Removing the trigger alone is insufficient. The reinforced network persists and continues to generate responses in the absence of the original stimulus.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<!-- CLOSING -->
+<section style="padding: 5rem 0 6rem;">
+  <div class="container" style="text-align:center; max-width: 680px; margin: 0 auto;">
+    <div class="fade-up">
+      <p class="section-label" style="justify-content:center;display:block;">Takeaway</p>
+      <h2>Biology, Not Dismissal</h2>
+      <p style="color:var(--text-muted);font-size:1.05rem;line-height:1.85;">Understanding sensory sensitivity through the lens of neural excitability and plasticity shifts the conversation from psychological dismissal toward mechanism-based medicine. Better diagnostic tools must integrate sensory processing, symptom burden, and neural excitability — not exposure levels alone.</p>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="footer-logo">Neural Threshold</div>
+  <div class="footer-note">Educational resource · Neuroscience perspectives</div>
+</footer>
+
+<script>
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(e => {
+      if (e.isIntersecting) {
+        e.target.classList.add('visible');
+        observer.unobserve(e.target);
+      }
+    });
+  }, { threshold: 0.1, rootMargin: '0px 0px -40px 0px' });
+
+  document.querySelectorAll('.fade-up').forEach(el => observer.observe(el));
+</script>
+</body>
+</html>
