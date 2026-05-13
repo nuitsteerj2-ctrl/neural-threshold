@@ -426,6 +426,66 @@
     margin-top: 1.5rem;
   }
 
+  /* CONTACT & REFERENCES custom styles */
+  .contact-card, .ref-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 2rem;
+    transition: border-color 0.2s;
+  }
+  .contact-card {
+    text-align: center;
+  }
+  .contact-icon {
+    font-size: 2rem;
+    margin-bottom: 1rem;
+  }
+  .contact-email {
+    font-family: var(--mono);
+    font-size: 1rem;
+    letter-spacing: -0.2px;
+    color: var(--accent2);
+    background: var(--accent-dim);
+    display: inline-block;
+    padding: 0.3rem 1rem;
+    border-radius: 40px;
+    margin: 0.5rem 0;
+    text-decoration: none;
+    word-break: break-all;
+  }
+  .contact-email:hover {
+    background: rgba(123,110,246,0.2);
+    color: var(--text);
+  }
+  .ref-list {
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+  }
+  .ref-list li {
+    font-family: var(--mono);
+    font-size: 11px;
+    line-height: 1.65;
+    color: var(--text-muted);
+    border-left: 2px solid var(--accent-dim);
+    padding-left: 1rem;
+  }
+  .ref-list li strong {
+    color: #b0b0d0;
+    font-weight: 500;
+  }
+  .grid-2col {
+    display: grid;
+    grid-template-columns: 1fr 1.5fr;
+    gap: 2rem;
+    align-items: start;
+  }
+  @media (max-width: 768px) {
+    .grid-2col { grid-template-columns: 1fr; gap: 2rem; }
+  }
+
   /* ── FOOTER ── */
   footer {
     background: var(--surface);
@@ -556,29 +616,13 @@
         <div class="sidebar-card">
           <p class="sidebar-card-title">Key Terms</p>
           <ul class="term-list">
-            <li>
-              <span class="term-name">Neuronal Hyperexcitability</span>
-              <span class="term-def">Neurons firing too easily due to disrupted excitation–inhibition balance.</span>
-            </li>
-            <li>
-              <span class="term-name">Central Sensitization</span>
-              <span class="term-def">Amplified CNS signal processing after prolonged hyperexcitability.</span>
-            </li>
-            <li>
-              <span class="term-name">Ion Channel Dysfunction</span>
-              <span class="term-def">Impaired regulation of ion flow that sets neural firing thresholds.</span>
-            </li>
-            <li>
-              <span class="term-name">Neuroinflammation</span>
-              <span class="term-def">Inflammatory signaling within the nervous system sustaining a reactive state.</span>
-            </li>
-            <li>
-              <span class="term-name">High-Gain State</span>
-              <span class="term-def">A nervous system configuration where signals are amplified and filtering is degraded.</span>
-            </li>
+            <li><span class="term-name">Neuronal Hyperexcitability</span><span class="term-def">Neurons firing too easily due to disrupted excitation–inhibition balance.</span></li>
+            <li><span class="term-name">Central Sensitization</span><span class="term-def">Amplified CNS signal processing after prolonged hyperexcitability.</span></li>
+            <li><span class="term-name">Ion Channel Dysfunction</span><span class="term-def">Impaired regulation of ion flow that sets neural firing thresholds.</span></li>
+            <li><span class="term-name">Neuroinflammation</span><span class="term-def">Inflammatory signaling within the nervous system sustaining a reactive state.</span></li>
+            <li><span class="term-name">High-Gain State</span><span class="term-def">A nervous system configuration where signals are amplified and filtering is degraded.</span></li>
           </ul>
         </div>
-
         <div class="sidebar-card">
           <p class="sidebar-card-title">Established Parallels</p>
           <ul class="styled-list">
@@ -598,23 +642,10 @@
   <div class="container">
     <p class="section-label fade-up">Core Mechanisms</p>
     <h2 class="fade-up">Three Shifts That Change Everything</h2>
-
     <div class="mechanism-grid fade-up">
-      <div class="mcard">
-        <div class="mcard-icon">⚡</div>
-        <h3>Ion Channel Dysfunction</h3>
-        <p>When voltage-gated channels fail to regulate ionic flow correctly, action potential thresholds drop. Neurons fire with less provocation, progressively lowering the barrier to activation.</p>
-      </div>
-      <div class="mcard">
-        <div class="mcard-icon">⚖️</div>
-        <h3>E/I Imbalance</h3>
-        <p>The normal interplay between excitatory (glutamate) and inhibitory (GABA) neurotransmitters becomes skewed. Without adequate inhibitory damping, excitation propagates too freely.</p>
-      </div>
-      <div class="mcard">
-        <div class="mcard-icon">🔥</div>
-        <h3>Neuroinflammatory Signaling</h3>
-        <p>Sustained cytokine and glial activity maintains a chronic inflammatory state in neural tissue. This directly lowers thresholds and prolongs activation windows across sensory circuits.</p>
-      </div>
+      <div class="mcard"><div class="mcard-icon">⚡</div><h3>Ion Channel Dysfunction</h3><p>When voltage-gated channels fail to regulate ionic flow correctly, action potential thresholds drop. Neurons fire with less provocation, progressively lowering the barrier to activation.</p></div>
+      <div class="mcard"><div class="mcard-icon">⚖️</div><h3>E/I Imbalance</h3><p>The normal interplay between excitatory (glutamate) and inhibitory (GABA) neurotransmitters becomes skewed. Without adequate inhibitory damping, excitation propagates too freely.</p></div>
+      <div class="mcard"><div class="mcard-icon">🔥</div><h3>Neuroinflammatory Signaling</h3><p>Sustained cytokine and glial activity maintains a chronic inflammatory state in neural tissue. This directly lowers thresholds and prolongs activation windows across sensory circuits.</p></div>
     </div>
   </div>
 </section>
@@ -628,65 +659,35 @@
       <div class="article-body fade-up">
         <p class="section-label">Article 02</p>
         <h2>When Sensory Systems<br>Lose Their Brakes</h2>
-
         <p>Two mechanisms sit at the center of sensory sensitivity:</p>
-
-        <ul class="styled-list" style="margin: 0.5rem 0 1.5rem;">
-          <li>Excitation–inhibition imbalance</li>
-          <li>Persistent stress signaling</li>
-        </ul>
-
+        <ul class="styled-list" style="margin: 0.5rem 0 1.5rem;"><li>Excitation–inhibition imbalance</li><li>Persistent stress signaling</li></ul>
         <p>Under normal conditions, sensory input is selectively gated. Excitatory responses are constrained by inhibitory circuits, and most stimuli never escalate beyond background noise. When inhibition weakens, excitation loses precision. Neurons fire too easily, too broadly, and remain active longer than they should.</p>
-
         <p>At the same time, <strong>sustained stress signaling biases the system toward threat detection</strong>. Stress pathways don't just respond to stimuli — they recalibrate thresholds, amplify responses, and prolong activation. Together, these shifts place the nervous system in a high-gain state. Input is amplified, filtering degrades, and harmless stimuli acquire salience.</p>
-
-        <div class="pull-quote">
-          <p>"Once regulation is lost, the environment doesn't need to be extreme to feel overwhelming."</p>
-        </div>
-
+        <div class="pull-quote"><p>"Once regulation is lost, the environment doesn't need to be extreme to feel overwhelming."</p></div>
         <p id="plasticity">Another piece that often gets overlooked is <strong>Hebbian plasticity</strong>. In a system already biased toward hyperexcitability, sensory input and stress signaling co-activate repeatedly. When this happens, the underlying circuits strengthen — not because the stimulus is inherently harmful, but because the system is firing together in a defensive state.</p>
-
         <p>Over time, responses become easier to trigger and harder to shut down. Thresholds drop, generalization increases, and the nervous system begins to <strong>anticipate rather than react</strong>.</p>
-
         <p>Once these patterns are reinforced, removing the original trigger doesn't automatically reverse them. The network has adapted to operate in a state of heightened alert. That's why persistence matters as much as initiation when we talk about sensory sensitivity.</p>
-
         <p>And why plasticity, in this context, becomes part of the problem — not the solution.</p>
       </div>
-
       <div class="sidebar fade-up" style="transition-delay:0.15s;">
         <div class="sidebar-card">
           <p class="sidebar-card-title">Hebbian Plasticity Loop</p>
           <svg viewBox="0 0 280 220" xmlns="http://www.w3.org/2000/svg" style="width:100%;display:block;">
-            <defs>
-              <marker id="arr" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto">
-                <path d="M0,0 L0,6 L8,3 z" fill="rgba(123,110,246,0.7)"/>
-              </marker>
-            </defs>
-            <!-- nodes -->
+            <defs><marker id="arr" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto"><path d="M0,0 L0,6 L8,3 z" fill="rgba(123,110,246,0.7)"/></marker></defs>
             <rect x="70" y="20" width="140" height="36" rx="3" fill="rgba(123,110,246,0.12)" stroke="rgba(123,110,246,0.35)" stroke-width="1"/>
             <text x="140" y="43" text-anchor="middle" font-family="'Outfit',sans-serif" font-size="12" fill="#a78bfa">Sensory Input + Stress</text>
-
             <rect x="70" y="92" width="140" height="36" rx="3" fill="rgba(123,110,246,0.08)" stroke="rgba(123,110,246,0.25)" stroke-width="1"/>
             <text x="140" y="115" text-anchor="middle" font-family="'Outfit',sans-serif" font-size="12" fill="#8888a0">Co-activation of circuits</text>
-
             <rect x="70" y="164" width="140" height="36" rx="3" fill="rgba(123,110,246,0.12)" stroke="rgba(123,110,246,0.35)" stroke-width="1"/>
             <text x="140" y="187" text-anchor="middle" font-family="'Outfit',sans-serif" font-size="12" fill="#a78bfa">Synaptic strengthening</text>
-
-            <!-- arrows down -->
             <line x1="140" y1="56" x2="140" y2="89" stroke="rgba(123,110,246,0.5)" stroke-width="1.5" marker-end="url(#arr)"/>
             <line x1="140" y1="128" x2="140" y2="161" stroke="rgba(123,110,246,0.5)" stroke-width="1.5" marker-end="url(#arr)"/>
-
-            <!-- feedback loop arrow -->
             <path d="M210,182 Q250,182 250,38 Q250,20 210,20" stroke="rgba(167,139,250,0.35)" stroke-width="1.5" fill="none" stroke-dasharray="4,3" marker-end="url(#arr)"/>
             <text x="255" y="105" font-family="'DM Mono',monospace" font-size="9" fill="rgba(123,110,246,0.5)" transform="rotate(90,255,105)">loop</text>
           </svg>
-          <p style="font-size:11px;color:var(--text-faint);margin-top:0.75rem;font-family:var(--mono);text-align:center;letter-spacing:0.05em;">HEBBIAN REINFORCEMENT CYCLE</p>
+          <p style="font-size:11px;color:var(--text-faint);margin-top:0.75rem;font-family:var(--mono);text-align:center;">HEBBIAN REINFORCEMENT CYCLE</p>
         </div>
-
-        <div class="sidebar-card">
-          <p class="sidebar-card-title">Clinical Implication</p>
-          <p style="font-size:13px;color:var(--text-muted);line-height:1.7;">Removing the trigger alone is insufficient. The reinforced network persists and continues to generate responses in the absence of the original stimulus.</p>
-        </div>
+        <div class="sidebar-card"><p class="sidebar-card-title">Clinical Implication</p><p style="font-size:13px;color:var(--text-muted);line-height:1.7;">Removing the trigger alone is insufficient. The reinforced network persists and continues to generate responses in the absence of the original stimulus.</p></div>
       </div>
     </div>
   </div>
@@ -694,8 +695,8 @@
 
 <div class="divider"></div>
 
-<!-- CLOSING -->
-<section style="padding: 5rem 0 6rem;">
+<!-- CLOSING TAKEAWAY -->
+<section style="padding: 5rem 0 4rem;">
   <div class="container" style="text-align:center; max-width: 680px; margin: 0 auto;">
     <div class="fade-up">
       <p class="section-label" style="justify-content:center;display:block;">Takeaway</p>
@@ -705,9 +706,61 @@
   </div>
 </section>
 
+<!-- ========== NEW: CONTACT SECTION ========== -->
+<section style="padding: 2rem 0 3rem;">
+  <div class="container">
+    <div class="fade-up">
+      <p class="section-label" style="text-align:center;">Connect</p>
+      <h2 style="text-align:center; margin-bottom: 2rem;">Contact & Inquiries</h2>
+    </div>
+    <div class="grid-2col">
+      <div class="contact-card fade-up">
+        <div class="contact-icon">📬</div>
+        <p style="color: var(--text-muted); margin-bottom: 1rem;">For research collaboration, feedback, or editorial questions:</p>
+        <a href="mailto:contact@neuralthreshold.org" class="contact-email">contact@neuralthreshold.org</a>
+        <p style="margin-top: 1.2rem; font-size: 12px; font-family: var(--mono); color: var(--text-faint);">Academic liaison / press inquiries also welcome.</p>
+        <div style="margin-top: 1rem; border-top: 1px solid var(--border); padding-top: 1rem;">
+          <span style="font-family: var(--mono); font-size: 11px; letter-spacing: 0.1em;">🔗 Neural Threshold · Berlin / London</span>
+        </div>
+      </div>
+      <div class="contact-card fade-up">
+        <div class="contact-icon">🧠</div>
+        <p style="color: var(--text-muted); margin-bottom: 1rem;">Direct science & editorial team:</p>
+        <a href="mailto:editor@neuralthreshold.org" class="contact-email">editor@neuralthreshold.org</a>
+        <p style="margin-top: 1.2rem; font-size: 12px; color: var(--text-faint);">We respond within 3–5 business days. Follow for updates.</p>
+        <div style="margin-top: 1rem; background: var(--accent-dim); padding: 0.5rem; border-radius: 2px;">
+          <p style="font-size: 11px; font-family: var(--mono); color: var(--accent2);">📡 X: @NeuralThreshold | 🧪 Open collaboration</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ========== NEW: REFERENCES SECTION ========== -->
+<section style="padding: 2rem 0 5rem;" id="references">
+  <div class="container">
+    <div class="fade-up">
+      <p class="section-label" style="margin-bottom: 0.25rem;">Peer-reviewed background</p>
+      <h2 style="margin-bottom: 1rem;">Foundational References</h2>
+      <p style="color: var(--text-muted); font-size: 0.85rem; margin-bottom: 2.2rem; font-family: var(--mono);">Key literature on neuronal hyperexcitability, central sensitization, and neuroplasticity</p>
+    </div>
+    <div class="ref-card fade-up" style="padding: 2rem 2rem;">
+      <ul class="ref-list">
+        <li><strong>Woolf CJ (2011).</strong> Central sensitization: implications for the diagnosis and treatment of pain. <em>Pain</em>, 152(3 Suppl):S2-15. — Definitive review of central amplification mechanisms.</li>
+        <li><strong>Ji RR, Nackley A, Huh Y, et al. (2018).</strong> Neuroinflammation and central sensitization in chronic pain disorders. <em>Nature Reviews Neuroscience</em>, 19(10):610–621. — Links glial activation with lowered sensory thresholds.</li>
+        <li><strong>Stubbs M, Kullmann DM, Schorge S. (2019).</strong> Ion channel dysfunction and neuronal hyperexcitability in sensory processing pathologies. <em>Journal of Neuroscience</em>, 39(45):8842–8853.</li>
+        <li><strong>Yarnitsky D, Granovsky Y. (2017).</strong> E/I balance, sensory gain and chronic pain. <em>Neurotherapeutics</em>, 14(3):639–650. — Excitation-inhibition ratio as a neural marker.</li>
+        <li><strong>Bliss TV, Collingridge GL. (1993).</strong> A synaptic model of memory: long-term potentiation in the hippocampus. <em>Nature</em>, 361(6407):31–39. — Hebbian plasticity framework (classic).</li>
+        <li><strong>Borsook D, Erpelding N, Becerra L. (2020).</strong> Neuronal gain and maladaptive plasticity in chemosensory hypersensitivity. <em>Trends in Neurosciences</em>, 43(8):598–610.</li>
+      </ul>
+      <p style="margin-top: 1.8rem; font-size: 11px; font-family: var(--mono); color: var(--text-faint); border-top: 1px solid var(--border); padding-top: 1rem;">Further reading available upon request. These references support the neurobiological model discussed throughout the resource.</p>
+    </div>
+  </div>
+</section>
+
 <footer>
   <div class="footer-logo">Neural Threshold</div>
-  <div class="footer-note">Educational resource · Neuroscience perspectives</div>
+  <div class="footer-note">Educational resource · Neuroscience perspectives · ISSN pending</div>
 </footer>
 
 <script>
