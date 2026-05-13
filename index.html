@@ -37,7 +37,6 @@
     overflow-x: hidden;
   }
 
-  /* ── NOISE TEXTURE OVERLAY ── */
   body::before {
     content: '';
     position: fixed; inset: 0;
@@ -47,7 +46,6 @@
     opacity: 0.4;
   }
 
-  /* ── HEADER ── */
   header {
     position: fixed; top: 0; left: 0; right: 0;
     z-index: 100;
@@ -78,7 +76,6 @@
   }
   nav a:hover { color: var(--text); }
 
-  /* ── HERO ── */
   .hero {
     position: relative;
     min-height: 100vh;
@@ -190,7 +187,6 @@
   }
   .btn-ghost:hover { color: var(--text); border-color: rgba(255,255,255,0.25); }
 
-  /* ── STATS STRIP ── */
   .stats-strip {
     border-top: 1px solid var(--border);
     border-bottom: 1px solid var(--border);
@@ -198,7 +194,6 @@
     padding: 2rem 3rem;
     display: flex; gap: 0;
   }
-
   .stat {
     flex: 1;
     padding: 0 2rem;
@@ -206,7 +201,6 @@
   }
   .stat:first-child { padding-left: 0; }
   .stat:last-child { border-right: none; }
-
   .stat-num {
     font-family: var(--serif);
     font-size: 2rem;
@@ -215,7 +209,6 @@
     line-height: 1;
     margin-bottom: 0.4rem;
   }
-
   .stat-label {
     font-size: 12px;
     font-family: var(--mono);
@@ -224,7 +217,6 @@
     text-transform: uppercase;
   }
 
-  /* ── MAIN CONTENT ── */
   .container {
     max-width: 1100px;
     margin: 0 auto;
@@ -254,7 +246,6 @@
     letter-spacing: -0.01em;
   }
 
-  /* ── TWO COLUMN ARTICLE LAYOUT ── */
   .article-grid {
     display: grid;
     grid-template-columns: 1fr 340px;
@@ -274,9 +265,7 @@
     font-weight: 500;
   }
 
-  /* ── SIDEBAR ── */
   .sidebar { position: sticky; top: 90px; }
-
   .sidebar-card {
     background: var(--surface);
     border: 1px solid var(--border);
@@ -284,7 +273,6 @@
     padding: 1.5rem;
     margin-bottom: 1.5rem;
   }
-
   .sidebar-card-title {
     font-family: var(--mono);
     font-size: 11px;
@@ -293,7 +281,6 @@
     color: var(--accent);
     margin-bottom: 1rem;
   }
-
   .term-list { list-style: none; }
   .term-list li {
     padding: 0.7rem 0;
@@ -303,20 +290,17 @@
     gap: 3px;
   }
   .term-list li:last-child { border-bottom: none; padding-bottom: 0; }
-
   .term-name {
     font-size: 13px;
     font-weight: 500;
     color: var(--text);
   }
-
   .term-def {
     font-size: 12px;
     color: var(--text-faint);
     line-height: 1.5;
   }
 
-  /* ── PULL QUOTE ── */
   .pull-quote {
     border-left: 3px solid var(--accent);
     padding: 1.25rem 1.5rem;
@@ -324,7 +308,6 @@
     background: var(--accent-dim);
     border-radius: 0 4px 4px 0;
   }
-
   .pull-quote p {
     font-family: var(--serif);
     font-size: 1.3rem;
@@ -334,7 +317,6 @@
     margin: 0 !important;
   }
 
-  /* ── MECHANISM CARDS ── */
   .mechanism-grid {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
@@ -345,14 +327,12 @@
     overflow: hidden;
     margin: 3rem 0;
   }
-
   .mcard {
     background: var(--surface);
     padding: 2rem;
     transition: background 0.2s;
   }
   .mcard:hover { background: var(--surface2); }
-
   .mcard-icon {
     width: 40px; height: 40px;
     border-radius: 3px;
@@ -362,7 +342,6 @@
     margin-bottom: 1.25rem;
     font-size: 18px;
   }
-
   .mcard h3 {
     font-family: var(--sans);
     font-size: 15px;
@@ -371,34 +350,29 @@
     margin-bottom: 0.75rem;
     letter-spacing: 0.01em;
   }
-
   .mcard p {
     font-size: 13.5px;
     color: var(--text-muted);
     line-height: 1.7;
   }
 
-  /* ── SECOND ARTICLE ── */
   .divider {
     height: 1px;
     background: linear-gradient(90deg, transparent, var(--border2), transparent);
     margin: 0;
   }
 
-  /* ── BULLET LIST STYLED ── */
   .styled-list {
     list-style: none;
     display: flex; flex-direction: column; gap: 0.75rem;
     margin: 1.5rem 0;
   }
-
   .styled-list li {
     display: flex; gap: 1rem;
     font-size: 1rem;
     color: var(--text-muted);
     line-height: 1.6;
   }
-
   .styled-list li::before {
     content: '—';
     color: var(--accent);
@@ -407,26 +381,6 @@
     margin-top: 1px;
   }
 
-  /* ── NEURAL DIAGRAM SVG SECTION ── */
-  .diagram-section {
-    background: var(--surface);
-    border: 1px solid var(--border);
-    border-radius: 4px;
-    padding: 3rem;
-    margin: 3rem 0;
-  }
-
-  .diagram-label {
-    font-family: var(--mono);
-    font-size: 10px;
-    letter-spacing: 0.2em;
-    text-transform: uppercase;
-    color: var(--text-faint);
-    text-align: center;
-    margin-top: 1.5rem;
-  }
-
-  /* CONTACT & REFERENCES custom styles */
   .contact-card, .ref-card {
     background: var(--surface);
     border: 1px solid var(--border);
@@ -434,16 +388,11 @@
     padding: 2rem;
     transition: border-color 0.2s;
   }
-  .contact-card {
-    text-align: center;
-  }
-  .contact-icon {
-    font-size: 2rem;
-    margin-bottom: 1rem;
-  }
-  .contact-email {
+  .contact-card { text-align: center; }
+  .contact-icon { font-size: 2rem; margin-bottom: 1rem; }
+  .contact-email, .contact-link {
     font-family: var(--mono);
-    font-size: 1rem;
+    font-size: 0.9rem;
     letter-spacing: -0.2px;
     color: var(--accent2);
     background: var(--accent-dim);
@@ -454,7 +403,7 @@
     text-decoration: none;
     word-break: break-all;
   }
-  .contact-email:hover {
+  .contact-email:hover, .contact-link:hover {
     background: rgba(123,110,246,0.2);
     color: var(--text);
   }
@@ -472,10 +421,7 @@
     border-left: 2px solid var(--accent-dim);
     padding-left: 1rem;
   }
-  .ref-list li strong {
-    color: #b0b0d0;
-    font-weight: 500;
-  }
+  .ref-list li strong { color: #b0b0d0; font-weight: 500; }
   .grid-2col {
     display: grid;
     grid-template-columns: 1fr 1.5fr;
@@ -486,7 +432,6 @@
     .grid-2col { grid-template-columns: 1fr; gap: 2rem; }
   }
 
-  /* ── FOOTER ── */
   footer {
     background: var(--surface);
     border-top: 1px solid var(--border);
@@ -495,7 +440,6 @@
     justify-content: space-between;
     align-items: center;
   }
-
   .footer-logo {
     font-family: var(--mono);
     font-size: 13px;
@@ -503,14 +447,12 @@
     letter-spacing: 0.15em;
     text-transform: uppercase;
   }
-
   .footer-note {
     font-size: 12px;
     color: var(--text-faint);
     font-family: var(--mono);
   }
 
-  /* ── FADE IN ANIMATION ── */
   .fade-up {
     opacity: 0;
     transform: translateY(24px);
@@ -566,22 +508,10 @@
 <!-- STATS -->
 <div class="stats-strip">
   <div class="container" style="display:flex;width:100%;padding:0 3rem;">
-    <div class="stat">
-      <span class="stat-num">3</span>
-      <span class="stat-label">Core Mechanisms</span>
-    </div>
-    <div class="stat">
-      <span class="stat-num">2</span>
-      <span class="stat-label">In-Depth Articles</span>
-    </div>
-    <div class="stat">
-      <span class="stat-num">E/I</span>
-      <span class="stat-label">Imbalance at the Root</span>
-    </div>
-    <div class="stat">
-      <span class="stat-num">∞</span>
-      <span class="stat-label">Reinforcement Loops</span>
-    </div>
+    <div class="stat"><span class="stat-num">3</span><span class="stat-label">Core Mechanisms</span></div>
+    <div class="stat"><span class="stat-num">2</span><span class="stat-label">In-Depth Articles</span></div>
+    <div class="stat"><span class="stat-num">E/I</span><span class="stat-label">Imbalance at the Root</span></div>
+    <div class="stat"><span class="stat-num">∞</span><span class="stat-label">Reinforcement Loops</span></div>
   </div>
 </div>
 
@@ -592,26 +522,15 @@
       <div class="article-body fade-up">
         <p class="section-label">Article 01</p>
         <h2>A Neuroscience Perspective on Sensory Sensitivity</h2>
-
         <p>People often assume that sensitivity to everyday environments is psychological or exaggerated. From a neuroscience point of view, that explanation doesn't really hold up.</p>
-
         <p>What makes more sense is <strong>neuronal hyperexcitability leading to central sensitization</strong>. When neurons become hyperexcitable, they start firing too easily. The balance between excitation and inhibition breaks down, often due to ion channel dysfunction, neurotransmitter imbalance, or sustained neuroinflammatory signaling. The nervous system becomes reactive instead of selective.</p>
-
-        <div class="pull-quote">
-          <p>"This isn't a fringe idea. Similar mechanisms are already well established in epilepsy, migraine, and neuropathic pain."</p>
-        </div>
-
+        <div class="pull-quote"><p>"This isn't a fringe idea. Similar mechanisms are already well established in epilepsy, migraine, and neuropathic pain."</p></div>
         <p>If this hyperexcitable state persists, the brain's sensory processing changes more broadly. This is where <strong>central sensitization</strong> comes in. The nervous system amplifies incoming signals and loses its ability to filter out harmless stimuli.</p>
-
         <p>At that point, the brain doesn't just register a smell, sound, or sensation. It interprets it as a threat. That's why low levels of common chemicals — fragrances, cleaning agents, vehicle exhaust, or new materials — can trigger real, disabling symptoms in some individuals. The response isn't imagined and it isn't voluntary. It's the nervous system misclassifying normal input as danger.</p>
-
         <p>Symptoms like headaches, brain fog, nausea, fatigue, and muscle pain are not abstract experiences. They reflect altered neural processing and sustained activation of stress and defense pathways.</p>
-
         <p>Looking at sensitivity through this lens matters. It moves the conversation away from dismissal and toward biology. It also highlights the need for better diagnostic tools that integrate sensory processing, symptom burden, and neural excitability rather than focusing on exposure levels alone.</p>
-
         <p><strong>Sensitivity, in this context, isn't weakness. It's a nervous system stuck in a high-gain state.</strong> Understanding that is essential — for research, for clinical practice, and for how we treat people experiencing these conditions.</p>
       </div>
-
       <div class="sidebar fade-up" style="transition-delay:0.15s;">
         <div class="sidebar-card">
           <p class="sidebar-card-title">Key Terms</p>
@@ -625,12 +544,7 @@
         </div>
         <div class="sidebar-card">
           <p class="sidebar-card-title">Established Parallels</p>
-          <ul class="styled-list">
-            <li>Epilepsy</li>
-            <li>Chronic migraine</li>
-            <li>Neuropathic pain</li>
-            <li>Fibromyalgia</li>
-          </ul>
+          <ul class="styled-list"><li>Epilepsy</li><li>Chronic migraine</li><li>Neuropathic pain</li><li>Fibromyalgia</li></ul>
         </div>
       </div>
     </div>
@@ -706,7 +620,7 @@
   </div>
 </section>
 
-<!-- ========== NEW: CONTACT SECTION ========== -->
+<!-- ========== CONTACT SECTION (UPDATED) ========== -->
 <section style="padding: 2rem 0 3rem;">
   <div class="container">
     <div class="fade-up">
@@ -716,27 +630,30 @@
     <div class="grid-2col">
       <div class="contact-card fade-up">
         <div class="contact-icon">📬</div>
-        <p style="color: var(--text-muted); margin-bottom: 1rem;">For research collaboration, feedback, or editorial questions:</p>
-        <a href="mailto:contact@neuralthreshold.org" class="contact-email">contact@neuralthreshold.org</a>
-        <p style="margin-top: 1.2rem; font-size: 12px; font-family: var(--mono); color: var(--text-faint);">Academic liaison / press inquiries also welcome.</p>
+        <p style="color: var(--text-muted); margin-bottom: 1rem;">Primary contact & research collaboration</p>
+        <a href="mailto:nuitsteerj.2@gmail.com" class="contact-email">nuitsteerj.2@gmail.com</a>
+        <p style="margin-top: 0.8rem;"><span class="contact-link" style="background:transparent; padding:0;">📞 +91 73966 10199</span></p>
+        <p style="margin-top: 0.5rem; font-size: 12px; font-family: var(--mono); color: var(--text-faint);">🏛 Sri Sathya Sai Institute of Higher Learning, Puttaparthi</p>
         <div style="margin-top: 1rem; border-top: 1px solid var(--border); padding-top: 1rem;">
-          <span style="font-family: var(--mono); font-size: 11px; letter-spacing: 0.1em;">🔗 Neural Threshold · Berlin / London</span>
+          <span style="font-family: var(--mono); font-size: 11px; letter-spacing: 0.1em;">📍 Puttaparthi, India</span>
         </div>
       </div>
       <div class="contact-card fade-up">
         <div class="contact-icon">🧠</div>
-        <p style="color: var(--text-muted); margin-bottom: 1rem;">Direct science & editorial team:</p>
-        <a href="mailto:editor@neuralthreshold.org" class="contact-email">editor@neuralthreshold.org</a>
-        <p style="margin-top: 1.2rem; font-size: 12px; color: var(--text-faint);">We respond within 3–5 business days. Follow for updates.</p>
+        <p style="color: var(--text-muted); margin-bottom: 1rem;">Secondary email & professional network</p>
+        <a href="mailto:jamiuttej27@gmail.com" class="contact-email">jamiuttej27@gmail.com</a>
+        <p style="margin-top: 0.8rem;">
+          <a href="https://linkedin.com/in/uttej-jami-44a08833b" target="_blank" rel="noopener noreferrer" class="contact-link" style="display:inline-flex; align-items:center; gap:6px;">🔗 LinkedIn: uttej-jami-44a08833b</a>
+        </p>
         <div style="margin-top: 1rem; background: var(--accent-dim); padding: 0.5rem; border-radius: 2px;">
-          <p style="font-size: 11px; font-family: var(--mono); color: var(--accent2);">📡 X: @NeuralThreshold | 🧪 Open collaboration</p>
+          <p style="font-size: 11px; font-family: var(--mono); color: var(--accent2);">📄 Responses typically within 2–3 business days</p>
         </div>
       </div>
     </div>
   </div>
 </section>
 
-<!-- ========== NEW: REFERENCES SECTION ========== -->
+<!-- ========== REFERENCES SECTION ========== -->
 <section style="padding: 2rem 0 5rem;" id="references">
   <div class="container">
     <div class="fade-up">
@@ -746,11 +663,11 @@
     </div>
     <div class="ref-card fade-up" style="padding: 2rem 2rem;">
       <ul class="ref-list">
-        <li><strong>Woolf CJ (2011).</strong> Central sensitization: implications for the diagnosis and treatment of pain. <em>Pain</em>, 152(3 Suppl):S2-15. — Definitive review of central amplification mechanisms.</li>
-        <li><strong>Ji RR, Nackley A, Huh Y, et al. (2018).</strong> Neuroinflammation and central sensitization in chronic pain disorders. <em>Nature Reviews Neuroscience</em>, 19(10):610–621. — Links glial activation with lowered sensory thresholds.</li>
+        <li><strong>Woolf CJ (2011).</strong> Central sensitization: implications for the diagnosis and treatment of pain. <em>Pain</em>, 152(3 Suppl):S2-15.</li>
+        <li><strong>Ji RR, Nackley A, Huh Y, et al. (2018).</strong> Neuroinflammation and central sensitization in chronic pain disorders. <em>Nature Reviews Neuroscience</em>, 19(10):610–621.</li>
         <li><strong>Stubbs M, Kullmann DM, Schorge S. (2019).</strong> Ion channel dysfunction and neuronal hyperexcitability in sensory processing pathologies. <em>Journal of Neuroscience</em>, 39(45):8842–8853.</li>
-        <li><strong>Yarnitsky D, Granovsky Y. (2017).</strong> E/I balance, sensory gain and chronic pain. <em>Neurotherapeutics</em>, 14(3):639–650. — Excitation-inhibition ratio as a neural marker.</li>
-        <li><strong>Bliss TV, Collingridge GL. (1993).</strong> A synaptic model of memory: long-term potentiation in the hippocampus. <em>Nature</em>, 361(6407):31–39. — Hebbian plasticity framework (classic).</li>
+        <li><strong>Yarnitsky D, Granovsky Y. (2017).</strong> E/I balance, sensory gain and chronic pain. <em>Neurotherapeutics</em>, 14(3):639–650.</li>
+        <li><strong>Bliss TV, Collingridge GL. (1993).</strong> A synaptic model of memory: long-term potentiation in the hippocampus. <em>Nature</em>, 361(6407):31–39.</li>
         <li><strong>Borsook D, Erpelding N, Becerra L. (2020).</strong> Neuronal gain and maladaptive plasticity in chemosensory hypersensitivity. <em>Trends in Neurosciences</em>, 43(8):598–610.</li>
       </ul>
       <p style="margin-top: 1.8rem; font-size: 11px; font-family: var(--mono); color: var(--text-faint); border-top: 1px solid var(--border); padding-top: 1rem;">Further reading available upon request. These references support the neurobiological model discussed throughout the resource.</p>
@@ -772,7 +689,6 @@
       }
     });
   }, { threshold: 0.1, rootMargin: '0px 0px -40px 0px' });
-
   document.querySelectorAll('.fade-up').forEach(el => observer.observe(el));
 </script>
 </body>
